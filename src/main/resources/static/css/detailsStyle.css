@@ -1,0 +1,201 @@
+/* ================================== */
+/*          DETAILS STYLE             */
+/* ================================== */
+
+/* --- Main container --- */
+.detail-page-container {
+    background-color: var(--secondary-bg-color);
+    padding: 3rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    border: 1px solid var(--border-color);
+}
+
+/* --- Title and Buttons --- */
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.detail-header h1 {
+    margin-bottom: 0;
+}
+
+/* --- Main layout and two columns --- */
+.detail-main-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    margin-top: 2rem;
+    align-items: flex-start;
+}
+
+/* --- LEFT COLUMN: IMAGE --- */
+.detail-cover {
+    flex: 1 1 40%;
+    max-width: 500px;
+    height: 600px;
+    aspect-ratio: 4 / 5;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-medium);
+    background-color: #e0e0e0;
+    position: sticky;
+    top: 120px;
+}
+
+.detail-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.detail-cover .placeholder-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e9ecef;
+    font-size: 5rem;
+    color: #ccc;
+}
+
+/* --- RIGHT COLUMN: DETAILS --- */
+.detail-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* --- Details grid --- */
+.detail-info .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.detail-info .info-item {
+    background-color: var(--background-color);
+    padding: 1.25rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.detail-info .info-item h4 {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--subtle-text-color);
+    margin-bottom: 0.25rem;
+}
+
+.detail-info .info-item p,
+.detail-info .info-item a,
+.detail-info .info-item li {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.detail-info .artist-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* --- Description --- */
+.description {
+    margin-top: 2rem;
+}
+
+.description h2 {
+    margin-bottom: 1rem;
+}
+
+/* --- Related Content --- */
+.related-content-section {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 2px solid var(--border-color);
+}
+
+.related-content-section h2 {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* --- Gallery --- */
+.related-content-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.related-content-gallery .card-item {
+    background-color: var(--secondary-bg-color);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
+}
+.related-content-gallery .card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+}
+.related-content-gallery .card-item-link {
+    text-decoration: none;
+    color: inherit;
+}
+.related-content-gallery .card-thumbnail {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.related-content-gallery .card-details {
+    padding: 1rem;
+}
+.related-content-gallery .card-title {
+    font-family: var(--font-headings);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+.related-content-gallery .card-subtitle {
+    font-size: 0.9rem;
+    color: var(--subtle-text-color);
+}
+
+/* --- Favourite Button --- */
+.favorite-button {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 2rem;
+    color: #ccc;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.favorite-button:hover { transform: scale(1.2); }
+.favorite-button.favorited { color: #e44d26; }
+
+/* --- Responsive --- */
+@media (max-width: 850px) {
+    .detail-main-content {
+        flex-direction: column;
+    }
+    .detail-cover {
+        position: static;
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 4/5;
+    }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:if="${museum != null}" th:text="${museum.name}">Museum Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/headerStyle.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&display=swap"/>
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/css/detailsStyle.css}">
+</head>
+<!-- src/main/resources/templates/museum.html -->
+<body style='font-family: "Inter", sans-serif;'>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="container detail-page-container" th:if="${museum != null}">
+    <!-- Name -->
+    <div class="detail-header">
+        <h1 th:text="${museum.name}">Museum Name</h1>
+    </div>
+
+    <!-- Main Content and two columns -->
+    <div class="detail-main-content">
+
+        <!-- LEFT: Image -->
+        <div class="detail-cover">
+            <img th:if="${museum.imageUrl != null}" th:src="${museum.imageUrl}" alt="Museum Picture">
+            <div th:unless="${museum.imageUrl}" class="placeholder-image">
+                <i class="fas fa-landmark"></i>
+            </div>
+        </div>
+
+        <!-- RIGHT: Details -->
+        <div class="detail-info">
+            <div class="info-grid">
+                <div class="info-item">
+                    <h4>Location</h4>
+                    <p th:text="${museum.address}"></p>
+                </div>
+            </div>
+            <div class="description" th:if="${museum.description != null and !museum.description.isEmpty()}">
+                <h2>Description</h2>
+                <p th:text="${museum.description}"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Museum's art -->
+    <div class="related-content-section" th:if="${!#lists.isEmpty(artworks)}">
+        <h2>Artworks in this Museum</h2>
+        <div class="related-content-gallery">
+            <div th:each="artwork : ${artworks}" class="card-item">
+                <a class="card-item-link" th:href="@{'/artwork/details/' + ${artwork.id}}">
+                    <img class="card-thumbnail" th:src="${artwork.imageUrl != null ? artwork.imageUrl : '/images/placeholder.png'}" alt="Artwork Cover">
+                    <div class="card-details">
+                        <span class="card-title" th:text="${artwork.title}">Title</span>
+                        <span class="card-subtitle" th:text="${artwork.year}">Year</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(artworks)}" class="placeholder-text">
+        <p>The museum is empty for now!</p>
+    </div>
+</div>
+
+<div class="container" th:unless="${museum != null}">
+    <p class="placeholder-text">Museum not found.</p>
+</div>
+</body>
+</html>

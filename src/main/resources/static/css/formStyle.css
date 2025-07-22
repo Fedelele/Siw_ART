@@ -1,0 +1,119 @@
+/* ================================== */
+/* =        FORM STYLE              = */
+/* ================================== */
+
+.form-container {
+    background-color: var(--secondary-bg-color);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    width: 100%;
+    max-width: 800px;
+    margin: 4rem auto;
+}
+
+.form-container h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.form-group, .form-group-row {
+    margin-bottom: 1.5rem;
+}
+
+.form-group-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.form-group-row .form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.form-control, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+}
+
+.form-container .search-bar {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container .search-bar:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 77, 64, 0.1);
+}
+
+
+.form-control:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 77, 64, 0.1);
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.form-control-file {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.text-danger {
+    color: var(--error-color);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.form-footer-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--subtle-text-color);
+}
+
+.multiselect-container {
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+.btn-group > .btn-light {
+    text-align: left;
+    background-color: white !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+.btn-group > .btn-light:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(0, 77, 64, 0.1) !important;
+}

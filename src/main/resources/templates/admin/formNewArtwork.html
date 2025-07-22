@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${artwork.id == null} ? 'Add Artwork' : 'Edit Artwork'">Artwork management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&display=swap">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/headerStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/formStyle.css}">
+</head>
+<body style="font-family: 'Inter', sans-serif;">
+<!--/*@thymesVar id="artwork" type="it.uniroma3.siw.model.Artwork"*/-->
+<!--/*@thymesVar id="artists" type="java.util.List<it.uniroma3.siw.model.Artist>"*/-->
+<!--/*@thymesVar id="museums" type="java.util.List<it.uniroma3.siw.model.Museum>"*/-->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="container">
+    <div class="form-container">
+        <h1 th:text="${artwork.id == null} ? 'Add new Artwork' : 'Edit Artwork'">Artwork Management</h1>
+
+        <form th:object="${artwork}"
+              th:action="${artwork.id == null} ? @{/admin/artwork/new} : @{'/admin/updateArtwork/' + ${artwork.id}}"
+              method="POST" enctype="multipart/form-data">
+
+            <input type="hidden" th:if="${artwork.id != null}" th:field="*{id}" />
+
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" class="form-control" th:field="*{title}" required>
+                <div th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{title}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="year">Year:</label>
+                <input type="number" id="year" class="form-control" th:field="*{year}" required min="0" max="9999">
+                <div th:if="${#fields.hasErrors('year')}" class="text-danger" th:errors="*{year}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" class="form-control" th:field="*{description}" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="artists">Artist/s:</label>
+                <select id="artists" name="artists[]" class="form-control" multiple="multiple" required size="5">
+                    <option th:each="artist : ${artists}"
+                            th:value="${artist.id}"
+                            th:text="${artist.name + ' ' + artist.surname}"
+                            th:selected="${artwork.artists != null && artwork.artists.contains(artist)}">
+                        Artist's Name
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('artists')}" class="text-danger" th:errors="*{artists}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="museum">Museum:</label>
+                <select id="museum" class="form-control" th:field="*{museum}">
+                    <option value="">No Museum</option>
+                    <option th:each="museum : ${museums}"
+                            th:value="${museum.id}"
+                            th:text="${museum.name}">
+                        Museum's name
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Artwork picture:</label>
+                <input type="file" id="image" name="image" class="form-control-file" accept="image/*">
+                <div th:if="${artwork.id != null && artwork.imageUrl != null}" class="mt-2">
+                    <p>Current Picture: <img th:src="${artwork.imageUrl}" alt="Artwork Picture" style="width: 80px; vertical-align: middle; border-radius: 4px;"></p>
+                </div>
+            </div>
+
+            <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                <ul>
+                    <li th:each="err : ${#fields.globalErrors()}" th:text="${err}">Global Error</li>
+                </ul>
+            </div>
+
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <div class="form-actions">
+                <a th:href="@{/artwork/all}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary" th:text="${artwork.id == null} ? 'Save Artwork' : 'Save Changes'">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

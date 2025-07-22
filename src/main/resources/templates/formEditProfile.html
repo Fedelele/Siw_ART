@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/headerStyle.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&display=swap"/>
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/formStyle.css}">
+    <script rel="script" th:src="@{/js/formScript.js}" defer></script>
+</head>
+<body style='font-family: "Inter", sans-serif;'>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!--/*@thymesVar id="user" type="it.uniroma3.siw.model.User"*/-->
+
+<div class="container" style="max-width: 600px; margin: 2rem auto; padding: 2rem; border: 1px solid #ddd; border-radius: 8px;">
+    <h1>Change your profile</h1>
+
+    <form th:action="@{/profile/edit}" th:object="${user}" method="post">
+
+        <!-- Username not editable -->
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 5px;">Username (not editable)</label>
+            <input type="text" th:value="${credentials.username}" disabled style="width: 100%; padding: 8px; background-color: #eee; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+
+        <!-- Name -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="name" style="display: block; margin-bottom: 5px;">Name</label>
+            <input type="text" id="name" th:field="*{name}" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+
+        <!-- Surname -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="surname" style="display: block; margin-bottom: 5px;">Surname</label>
+            <input type="text" id="surname" th:field="*{surname}" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+
+        <!-- Email -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="email" style="display: block; margin-bottom: 5px;">Email</label>
+            <input type="email" id="email" th:field="*{email}" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Save</button>
+            <a th:href="@{/profile}" style="padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px;">Cancel</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:if="${artist != null}" th:text="${artist.name + ' ' + artist.surname}">Artist Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/headerStyle.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&display=swap"/>
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/css/detailsStyle.css}">
+</head>
+<!-- src/main/resources/templates/artist.html -->
+<body style='font-family: "Inter", sans-serif;'>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="container detail-page-container" th:if="${artist != null}">
+    <div class="detail-header">
+        <h1 th:text="${artist.name + ' ' + artist.surname}">Artist's Name</h1>
+    </div>
+
+    <!-- Main content and two columns-->
+    <div class="detail-main-content">
+
+        <!-- Left column: Image -->
+        <div class="detail-cover">
+            <img th:if="${artist.imageUrl != null}" th:src="${artist.imageUrl}" alt="Artist Portrait">
+            <div th:unless="${artist.imageUrl}" class="placeholder-image">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+
+        <!-- Right colum: Details -->
+        <div class="detail-info">
+            <div class="info-grid">
+                <div class="info-item" th:if="${artist.nationality}">
+                    <h4>Nationality</h4>
+                    <p th:text="${artist.nationality}"></p>
+                </div>
+                <div class="info-item" th:if="${artist.dateOfBirth != null}">
+                    <h4>Date of Birth</h4>
+                    <p th:text="${#temporals.format(artist.dateOfBirth, 'dd MMMM yyyy')}"></p>
+                </div>
+                <div class="info-item" th:if="${artist.dateOfDeath != null}">
+                    <h4>Date of Death</h4>
+                    <p th:text="${#temporals.format(artist.dateOfDeath, 'dd MMMM yyyy')}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Underneath: artist's artworks -->
+    <div class="related-content-section" th:if="${!#lists.isEmpty(artworks)}">
+        <h2>The Works of this Artist</h2>
+        <div class="related-content-gallery">
+            <div th:each="artwork : ${artworks}" class="card-item">
+                <a class="card-item-link" th:href="@{'/artwork/details/' + ${artwork.id}}">
+                    <img class="card-thumbnail" th:src="${artwork.imageUrl != null ? artwork.imageUrl : '/images/placeholder.png'}" alt="Artwork Cover">
+                    <div class="card-details">
+                        <span class="card-title" th:text="${artwork.title}">Title</span>
+                        <span class="card-subtitle" th:text="${artwork.year}">Year</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(artworks)}" class="placeholder-text">
+        <p>There is nothing about this artist's works yet.</p>
+    </div>
+</div>
+
+<div class="container" th:unless="${artist != null}">
+    <p class="placeholder-text">Artist not found.</p>
+</div>
+</body>
+</html>

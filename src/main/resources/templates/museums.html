@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>All Museums</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/headerStyle.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&display=swap"/>
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/css/listStyle.css}">
+    <script th:src="@{/js/confirmDelete.js}"></script>
+    <script th:src="@{/js/search.js}" defer></script>
+</head>
+<body style='font-family: "Inter", sans-serif;'>
+<header th:replace="~{fragments/header :: header(activePage='museums')}"></header>
+
+<div class="container">
+    <!-- Flash Messages -->
+    <div th:if="${success}" class="alert alert-success">
+        <p th:text="${success}"></p>
+    </div>
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
+    <div class="list-header">
+        <h2>All Museums</h2>
+        <div class="list-actions">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input placeholder="Search Museums..." class="search-bar" value=""/>
+            </div>
+            <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/formNewMuseum}" class="add-button" title="Add Museum">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(museums)}" class="list-container">
+        <!-- Card for each museum -->
+        <div th:each="museum : ${museums}" class="card-item">
+            <a class="card-item-link" th:href="@{'/museum/details/' + ${museum.id}}">
+                <img class="card-thumbnail" th:src="${museum.imageUrl != null ? museum.imageUrl : '/images/placeholder.png'}" alt="Museum Photo">
+                <div class="card-details">
+                    <span class="card-title" th:text="${museum.name}">Museum Name</span>
+                    <span class="card-subtitle" th:text="${museum.address}">Location</span>
+                </div>
+            </a>
+            <!-- Admin Actions -->
+            <div class="card-actions" sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{'/admin/formUpdateMuseum/' + ${museum.id}}" class="action-icon edit-icon" title="Edit">
+                    <i class="fas fa-pen"></i>
+                </a>
+                <a href="#" th:data-id="${museum.id}" th:data-title="${museum.name}" th:data-url="@{/admin/museum/delete/{id}(id=${museum.id})}" onclick="return confirmDelete(this)"
+                   class="action-icon delete-icon" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Placeholder for empty list -->
+    <div th:if="${#lists.isEmpty(museums)}" class="placeholder-text">
+        <p>No Museum available for now!</p>
+    </div>
+</div>
+</body>
+</html>

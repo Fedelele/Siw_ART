@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${artist.id == null} ? 'Add Artist' : 'Edit Artist'">Artist Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&display=swap">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/headerStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/formStyle.css}">
+</head>
+<body style="font-family: 'Inter', sans-serif;">
+<!--/*@thymesVar id="artist" type="it.uniroma3.siw.model.Artist"*/-->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="container">
+    <div class="form-container">
+        <h1 th:text="${artist.id == null} ? 'Add a new Artist' : 'Edit an Artist'">Artist Management</h1>
+
+        <form th:object="${artist}"
+              th:action="${artist.id == null} ? @{/admin/artist/new} : @{'/admin/updateArtist/' + ${artist.id}}"
+              method="POST" enctype="multipart/form-data">
+
+            <input type="hidden" th:if="${artist.id != null}" th:field="*{id}" />
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" class="form-control" th:field="*{name}" required>
+                <div th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="surname">Surname:</label>
+                <input type="text" id="surname" class="form-control" th:field="*{surname}" required>
+                <div th:if="${#fields.hasErrors('surname')}" class="text-danger" th:errors="*{surname}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="nationality">Nationality:</label>
+                <input type="text" id="nationality" class="form-control" th:field="*{nationality}">
+            </div>
+
+            <div class="form-group-row">
+                <div class="form-group">
+                    <label for="dateOfBirth">Date of Birth:</label>
+                    <input type="date" id="dateOfBirth" class="form-control" th:field="*{dateOfBirth}">
+                </div>
+                <div class="form-group">
+                    <label for="dateOfDeath">Date of Death:</label>
+                    <input type="date" id="dateOfDeath" class="form-control" th:field="*{dateOfDeath}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Artist's Portrait:</label>
+                <input type="file" id="image" name="image" class="form-control-file" accept="image/*">
+                <div th:if="${artist.id != null && artist.imageUrl != null}" class="mt-2">
+                    <p>Current photo: <img th:src="${artist.imageUrl}" alt="Artist's portrait" style="width: 80px; vertical-align: middle; border-radius: 4px;"></p>
+                </div>
+            </div>
+
+            <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                <ul>
+                    <li th:each="err : ${#fields.globalErrors()}" th:text="${err}">Global Error</li>
+                </ul>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/artist/all}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary" th:text="${artist.id == null} ? 'Save Artist' : 'Save Changes'">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

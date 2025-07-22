@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title th:if="${artwork != null}" th:text="${artwork.title}">Artwork Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/headerStyle.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&display=swap"/>
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/css/detailsStyle.css}">
+</head>
+<!-- src/main/resources/templates/artwork.html -->
+<body style='font-family: "Inter", sans-serif;'>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="container detail-page-container" th:if="${artwork != null}">
+    <!-- Title and favourite button -->
+    <div class="detail-header">
+        <h1 th:text="${artwork.title}">Title</h1>
+        <div class="header-actions" sec:authorize="isAuthenticated()">
+            <form th:action="@{/artwork/details/{id}/toggleFavorite(id=${artwork.id})}" method="post" style="margin: 0;">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="favorite-button" th:classappend="${isFavorite} ? 'favorited' : ''" title="Add to favourites">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main content and two columns -->
+    <div class="detail-main-content">
+
+        <!-- LEFT: IMAGER -->
+        <div class="detail-cover">
+            <img th:if="${artwork.imageUrl}" th:src="${artwork.imageUrl}" alt="Artwork Cover">
+            <div th:unless="${artwork.imageUrl}" class="placeholder-image">
+                <i class="fas fa-image"></i>
+            </div>
+        </div>
+
+        <!-- RIGHT: DETAILS -->
+        <div class="detail-info">
+            <div class="info-grid">
+                <div class="info-item">
+                    <h4>Year</h4>
+                    <p th:text="${artwork.year}"></p>
+                </div>
+                <div class="info-item" th:if="${artwork.museum}">
+                    <h4>Museum</h4>
+                    <p><a th:href="@{'/museum/details/' + ${artwork.museum.id}}" th:text="${artwork.museum.name}">Museum Name</a></p>
+                </div>
+            </div>
+
+            <!--artists -->
+            <div class="info-item artist-list" th:if="${!#lists.isEmpty(artwork.artists)}">
+                <h4>Artist/s</h4>
+                <ul>
+                    <li th:each="artist : ${artwork.artists}">
+                        <a th:href="@{'/artist/details/' + ${artist.id}}" th:text="${artist.name + ' ' + artist.surname}">Artist Name</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Description -->
+            <div class="description" th:if="${artwork.description != null and !artwork.description.isEmpty()}">
+                <h2>Description</h2>
+                <p th:text="${artwork.description}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" th:unless="${artwork != null}">
+    <p class="placeholder-text">Artwork not found</p>
+</div>
+</body>
+</html>
